@@ -1,0 +1,4 @@
+{
+    "sketch": "ARDUINO\\casilleros.ino",
+    "board": "arduino:avr:uno"
+}
