@@ -11,6 +11,7 @@ let macAddress = "20:16:11:29:61:79";
 let app = {
     initialize: function() {
         this.bindEvents();
+        status.innerHTML = "INICIANDO"
         // this.iniciaBotones();
     },
     bindEvents: function() {

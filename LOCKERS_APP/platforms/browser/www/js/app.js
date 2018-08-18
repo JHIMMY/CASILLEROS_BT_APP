@@ -11,7 +11,7 @@ let macAddress = "20:16:11:29:61:79";
 let app = {
     initialize: function() {
         this.bindEvents();
-        this.iniciaBotones();
+        // this.iniciaBotones();
     },
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -34,14 +34,14 @@ let app = {
         alert("subscribe failed");
     },
 
-    iniciaBotones: () => {
-        let connectButton = document.getElementById("btn1");
+    // iniciaBotones: () => {
+    //     let connectButton = document.getElementById("btn1");
 
-        connectButton.addEventListener('click', this.contectarModuloBT, false);
-    },
+    //     connectButton.addEventListener('click', this.contectarModuloBT, false);
+    // },
 
-    contectarModuloBT: () => {
-        console.log("Intrentando Conectar ....");
-        bluetoothSerial.connect(macAddress_or_uuid, connectSuccess, connectFailure);
-    }
+    // contectarModuloBT: () => {
+    //     console.log("Intrentando Conectar ....");
+    //     bluetoothSerial.connect(macAddress_or_uuid, connectSuccess, connectFailure);
+    // }
 };
