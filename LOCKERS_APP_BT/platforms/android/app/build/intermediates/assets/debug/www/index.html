@@ -33,13 +33,14 @@
                         <div class="col-2"></div>
                         <div class="col-8">
                             <h6>HABILITAR SISTEMA</h6>
-                            <form>
+                            <form style="margin-bottom:7px;" onsubmit="return false;">
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Contraseña">
+                                    <input id="pass" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Contraseña">
                                 </div>
-                                <button  type="button" class="btn btn-success btn-sm activarButtons" style="margin-right:10px;">Activar</button>
-                                <button type="button" class="btn btn-danger btn-sm activarButtons" disabled>Desactivar</button>
+                                <button id="activarBtn"  type="button" class="btn btn-success btn-sm activarButtons" style="margin-right:10px;">Activar</button>
+                                <button id="desactivarBtn" type="button" class="btn btn-danger btn-sm activarButtons" disabled>Desactivar</button>
                             </form>
+                            <span id="statusLabel" style="font-size:0.7em;"></span>
                         </div>
                         <div class="col-2"></div>
                     </div>

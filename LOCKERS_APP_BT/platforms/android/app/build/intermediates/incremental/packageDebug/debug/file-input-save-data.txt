@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Aug 19 11:12:25 BOT 2018
+#Sun Aug 19 13:19:35 BOT 2018
 5.base=F\:\\ARDUINO ELECTRONICS WORLD\\PROYECTO_CASILLEROS_FULL_APP_BT\\LOCKERS_APP_BT\\platforms\\android\\app\\build\\intermediates\\res\\debug\\resources-debug.ap_
 42.base=F\:\\ARDUINO ELECTRONICS WORLD\\PROYECTO_CASILLEROS_FULL_APP_BT\\LOCKERS_APP_BT\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 32.set=ASSET
