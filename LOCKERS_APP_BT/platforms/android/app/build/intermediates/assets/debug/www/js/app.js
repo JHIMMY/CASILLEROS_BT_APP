@@ -1,17 +1,9 @@
 
-if ('addEventListener' in document){
-    document.addEventListener('DOMContentLoaded', function (){
-        FastClick.attach(document.body);
-        app.initialize();
-    }, false);
-}
-
-let macAddress = "20:16:11:29:61:79";
+let macAddress = "20:16:11:29:61:79";  // BT
 
 let app = {
     initialize: function() {
         this.bindEvents();
-        status.innerHTML = "INICIANDO";
         console.log("dentro de initialize");
         // this.iniciaBotones();
     },
@@ -34,16 +26,10 @@ let app = {
     },
     subscribeFailed: function() {
         alert("subscribe failed");
-    },
+    }
+}; // END of APP
 
-    // iniciaBotones: () => {
-    //     let connectButton = document.getElementById("btn1");
-
-    //     connectButton.addEventListener('click', this.contectarModuloBT, false);
-    // },
-
-    // contectarModuloBT: () => {
-    //     console.log("Intrentando Conectar ....");
-    //     bluetoothSerial.connect(macAddress_or_uuid, connectSuccess, connectFailure);
-    // }
-};
+document.addEventListener('DOMContentLoaded', function (){
+    FastClick.attach(document.body); // smoother clicks on mobile dev
+    app.initialize();
+}, false);

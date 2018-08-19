@@ -22,7 +22,21 @@
 html, body {
     height: 100%;
     font-family: "patua";
-    background-color: #3AFF35; /* body for navbar blank left right */
+    background-color: #01346B; /* body for navbar blank left right */
+    color: whitesmoke;
+}
+
+#masterDiv{
+    height: 100vh;
+    max-height: 100vh;
+}
+#cardImg{
+    border: lightgray 2px solid;
+}
+
+button.activarButtons{
+    width: 80px;
+    font-size:0.78rem;
 }
 
 .navbar {
