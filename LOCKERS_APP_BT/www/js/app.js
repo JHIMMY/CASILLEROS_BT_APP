@@ -14,8 +14,9 @@ let app = {
         app.setListeners();
     },
     onConnect: function() {
-        activateAllSystems();
-        bluetoothSerial.subscribe("\n", app.onMessage, app.subscribeFailed);     
+        bluetoothSerial.subscribe("\n", app.onMessage, app.subscribeFailed); 
+        setTimeout(activateAllSystems, 2000);    
+        // activateAllSystems();
     }, 
     onDisconnect: function() {
         alert("Bluetooth Desconectado, revise la conexion e inicie nuevamente");
@@ -27,7 +28,11 @@ let app = {
     },
     subscribeFailed: function() {
         alert("Fallo la suscripción al Bluetooth Arduino");
-    }, 
+    },
+    
+    sendData: function(data){
+        bluetoothSerial.write(data);
+    },
     // From here JAD FUNCTIONS SPECIFIC FOT THIS PROJECT
     setListeners: function() {
         let activarBtn = document.querySelector("#activarBtn");
@@ -71,11 +76,13 @@ function checkSystem(password){
 }
 
 function activateAllSystems(params) {
+    app.sendData("Hola");
     setStatusLabel("Pase su huella", "lime");
     setcardImage("finger.jpg");
     pass.value = '';
     enableDisableBtns(activarBtn, false);
     enableDisableBtns(desactivarBtn, true);
+    app.sendData("jhimmy\n");
 }
 
 function resetApp(){

@@ -1,4 +1,5 @@
 {
-    "sketch": "ARDUINO\\casilleros.ino",
-    "board": "arduino:avr:uno"
+    "sketch": "ARDUINO\\casilleros\\casilleros.ino",
+    "board": "arduino:avr:uno",
+    "port": "COM4"
 }
