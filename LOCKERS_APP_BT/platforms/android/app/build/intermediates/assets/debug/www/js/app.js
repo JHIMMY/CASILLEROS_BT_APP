@@ -11,7 +11,6 @@ let app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     onDeviceReady: function() {
-        // bluetoothSerial.connect(macAddress, app.onConnect, app.onDisconnect);
         app.setListeners();
     },
     onConnect: function() {
@@ -19,11 +18,12 @@ let app = {
         bluetoothSerial.subscribe("\n", app.onMessage, app.subscribeFailed);     
     }, 
     onDisconnect: function() {
-        alert("Bluetooth Desconectado");
-        setStatusLabel("Bluetooth Desconectado!", "crimson");
+        alert("Bluetooth Desconectado, revise la conexion e inicie nuevamente");
+        resetApp();
     },
     onMessage: function(data) {
-        // counter.innerHTML = data;        
+        // counter.innerHTML = data; 
+        dataDiv.innerHTML = data;       
     },
     subscribeFailed: function() {
         alert("Fallo la suscripción al Bluetooth Arduino");
@@ -35,6 +35,8 @@ let app = {
         let pass = document.getElementById("pass"); // password input
         let statusLabel = document.getElementById("statusLabel");
         let cardImg = document.getElementById("carImg");
+        let abrirBtn = document.getElementById("abrirBtn");
+        let devolverBtn = document.getElementById("devolverBtn");
 
         activarBtn.addEventListener('click', () => {
             checkSystem(pass.value);
@@ -63,7 +65,8 @@ function checkSystem(password){
         bluetoothSerial.connect(macAddress, app.onConnect, app.onDisconnect);
     }
     else{
-        setStatusLabel("Contraseña Incorrecta");
+        setStatusLabel("Contraseña Incorrecta", "yellow");
+        pass.value = '';
     }
 }
 
@@ -73,7 +76,6 @@ function activateAllSystems(params) {
     pass.value = '';
     enableDisableBtns(activarBtn, false);
     enableDisableBtns(desactivarBtn, true);
-    
 }
 
 function resetApp(){
@@ -83,6 +85,8 @@ function resetApp(){
     pass.value = '';
     enableDisableBtns(activarBtn, true);
     enableDisableBtns(desactivarBtn, false);
+    enableDisableBtns(abrirBtn, false);
+    enableDisableBtns(devolverBtn, false);
 }
 
 function problemDisconnecting(){
