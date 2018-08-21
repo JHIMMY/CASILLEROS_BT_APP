@@ -6,6 +6,7 @@
  * VERSION: 1.0.0
  * 2018
   *******************************************************************************/
+ //Librerias
 #include <Adafruit_Fingerprint.h>
 #include <Servo.h>
 #include <SoftwareSerial.h>
@@ -57,20 +58,21 @@ void setup(){
     relayLockerControl(2, false); // could be to use servo 1 and devol servo trick
 
     servo1.attach(servo1Pin);
-    executeCMD(">SERVO1<"); //reset servo1
     servo2.attach(servo2Pin);
     servo3.attach(servo3Pin);
     servo4.attach(servo4Pin);
     servo5.attach(servo5Pin);
     servo6.attach(servo6Pin);
     
-    controlServo(1, 0);
+    // reset servos to 0 degrees
+    controlServo(1, 0); // reset servo 1 for DELV servo
     controlServo(2, 0);
     controlServo(3, 0);
     controlServo(4, 0);
     controlServo(5, 0);
     controlServo(6, 0);
-}
+    executeCMD(">SERVO1<"); //reset servo1 for LAB1
+} // fin setup()
 
 void loop(){
     serialEventINcheck();
@@ -83,9 +85,6 @@ void loop(){
 
     if (ACCESS_GRANTED){
        ID = getFingerprintID();
-       if (ID == 0){ // test delete
-            ID = 1;
-       }
         if (ID != -1 && ID > 0){
           String userID = "user" + String(ID);
           Serial.println(userID);

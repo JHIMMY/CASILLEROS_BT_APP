@@ -151,8 +151,8 @@ function processIncomingData(data){
         let userID = data.substring(4);
         checkValidID(userID);
     }
-    else if (false){
-
+    else if ("ERROR!"){
+        alert("ERROR DETECTADO FAVOR REINICIE TOTO EL SISTEMA");
     }
     else{
        console.log("INCORRECTA!!!!!");
