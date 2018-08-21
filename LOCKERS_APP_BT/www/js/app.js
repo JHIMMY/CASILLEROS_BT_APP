@@ -24,7 +24,6 @@ let app = {
     },
     onMessage: function(data) {
         // counter.innerHTML = data; 
-        dataDiv.innerHTML = data; 
         processIncomingData(data);      
     },
     subscribeFailed: function() {
@@ -32,7 +31,7 @@ let app = {
     },
     
     sendData: function(data){
-        trueData = data + "\n";
+        let trueData = data + "\n";
         bluetoothSerial.write(trueData);
     },
     // From here JAD FUNCTIONS SPECIFIC FOT THIS PROJECT
@@ -44,6 +43,7 @@ let app = {
         let cardImg = document.getElementById("carImg");
         let abrirBtn = document.getElementById("abrirBtn");
         let devolverBtn = document.getElementById("devolverBtn");
+        let testBtn = document.getElementById("testBtn");
 
         activarBtn.addEventListener('click', () => {
             checkSystem(pass.value);
@@ -53,6 +53,11 @@ let app = {
             app.sendData(">DIS_FINGER<");
             bluetoothSerial.disconnect(resetApp, problemDisconnecting);
         }, false );
+
+        testBtn.addEventListener('click', function(){
+            app.sendData(">HolaCHoco<");
+        }, false);
+
     }, 
  
 }; // END of APP
@@ -85,6 +90,7 @@ function activateAllSystems(params) {
     pass.value = '';
     enableDisableBtns(activarBtn, false);
     enableDisableBtns(desactivarBtn, true);
+    enableDisableBtns(testBtn, true);
 }
 
 function resetApp(){
@@ -128,6 +134,8 @@ function processIncomingData(data){
     /* VALID INSTRUCTIONS 
         user#  -- eg user1, user2, user3
     */
+   let divTESTEST = document.getElementById("tete");
+   divTESTEST.innerText = data;
     if (data.indexOf("user") != -1){
         console.log("La instruccion es Correcta!");
         let userID = data.substring(4);

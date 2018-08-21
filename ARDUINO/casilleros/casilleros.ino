@@ -6,21 +6,56 @@
  * VERSION: 1.0.0
  * 2018
   *******************************************************************************/
-
+#include <Adafruit_Fingerprint.h>
+#include <Servo.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial Bluetooth(7, 8); // RX, TX
-
+// SoftwareSerial Bluetooth(7, 8); // RX, TX
 
 /* GLOBAL VARIABLES */
 String inputString = "";      
 String CMD = "";
+
+bool ACCESS_GRANTED = false;
+int ID = -1;
+
+const byte relay_1 = 12; // power fingerprint sensor
+const byte relay_2 = 13; //
+
+const uint8_t servo1Pin = 3;
+const uint8_t servo2Pin = 5;
+const uint8_t servo3Pin = 6;
+const uint8_t servo4Pin = 9;
+const uint8_t servo5Pin = 10;
+const uint8_t servo6Pin = 11;
+
+Servo servo1; // lab1
+Servo servo2; // lab2
+Servo servo3; // lab3
+Servo servo4; // lab4
+Servo servo5; // lab 5
+Servo servo6; // control devolucion
+
+Servo myServos[6] = {servo1, servo2, servo3, servo4, servo5, servo6};
+
+SoftwareSerial mySerial(2, 4); // Rx, TX -> fingerprint sensor
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 /* END gLOBAL VARIABLES */
 
 
 void setup(){
-    Bluetooth.begin(9600);
-    Serial.begin(115200);
+    finger.begin(57600);
+    Serial.begin(9600);
+    // Bluetooth.begin(9600);
+
+
+    pinMode(relay_1, OUTPUT);
+    pinMode(relay_2, OUTPUT);
+    //Apagar todos los reles por defecto
+    relayLockerControl(1, false); // fingerprint sensor
+    relayLockerControl(2, false); // could be to use servo 6 and 7 trick
+
+    
 }
 
 void loop(){
@@ -30,19 +65,30 @@ void loop(){
       executeCMD(CMD);
       CMD = ""; // 
     }
-
     delay(200);
+
+    if (ACCESS_GRANTED){
+       ID = getFingerprintID();
+       if (ID == 0){ // test delete
+            ID = 1;
+       }
+        if (ID != -1 && ID > 0){
+          String userID = "user" + String(ID);
+          Serial.println(userID);
+          ID = -1;
+          ACCESS_GRANTED = false;
+        }
+    }
 }
 
 //This function handles the reception of the CMD instructions from HMI
 void serialEventINcheck() {
-  while (Bluetooth.available()) {
+  while (Serial.available()) {
     // get the new byte:
-    char inChar = (char)Bluetooth.read();
-
+    char inChar = (char)Serial.read();
     if (inChar == '\n'){
-      Serial.print("ARDUINO: recibido de APP =>  ");
-      Serial.println(inputString);
+    //   Serial.print("ARDUINO: recibido de APP =>  ");
+    //   Serial.println(inputString);
       CMD = inputString;
       inputString = "";
     }
@@ -55,5 +101,98 @@ void serialEventINcheck() {
 
 void executeCMD(String comando){
   //exe
-
+  if (comando == ">EN_FINGER<"){
+      fingerprintCheckAndAction(true);
+      ACCESS_GRANTED = true;
+      CMD = "";
+  }
+  else if(comando == ">DIS_FINGER<"){
+      fingerprintCheckAndAction(false);
+      ACCESS_GRANTED = false;
+      ID = -1;
+      CMD = "";
+  }
 }
+
+void relayLockerControl(int number, boolean action){
+    // number -> numero de pin de rele a controlar
+    // action -> true = activado / false = desactivado
+    int relay; 
+    switch (number)
+    {
+        case 1:
+            relay = relay_1;
+            break;
+        case 2:
+            relay = relay_2;
+            break;
+        // case 3:
+        //     relay = relay_3;
+        //     break;
+        // case 4:
+        //     relay = relay_4;
+        //     break;
+        default:
+            systemError("Error No. de Rele desconocido. REINICIE!");
+    } 
+
+    if (action){
+        digitalWrite(relay, LOW); // rele activado
+
+    }
+    else{
+        digitalWrite(relay, HIGH);  
+    }
+} // fin releLockerControl()
+
+void systemError(String msg){
+    // resetear el arduino para continuar
+    //Serial.println(msg);
+
+    while (1) { delay(10); }
+}
+
+void controlServo(int servoNumber, int rotation ){
+    if (servoNumber >= 1 && servoNumber <= 6){
+        int index = servoNumber - 1;
+        myServos[index].write(rotation);
+    }
+    else{
+        systemError("ERROR: Invalid Servo Number");
+    }
+} // FIN controlServo()
+
+void fingerprintCheckAndAction(bool action){
+  //if action true - enable its rele and checkss if founf, action false disables its rele (turn off fingerprint)
+    if (action){
+        relayLockerControl(1, true);
+        delay(600);
+        // detectar sensor huella
+        if (finger.verifyPassword()) {
+            //Serial.println("Found fingerprint sensor!");
+            // finger.getTemplateCount();
+            // Serial.print("El sensor contiene "); 
+            // Serial.print(finger.templateCount); Serial.println(" Huellas registradas");
+            // Serial.println("Waiting for valid finger...");
+        } 
+        else {
+            systemError("No se pudo encontrar al sensor :(\nFAVOR REINICIE!");
+        }   
+    }
+    else{
+        relayLockerControl(1, false);
+    }
+}
+
+// devuelve -1 si falla, de lo contrario devuelve el ID #
+int getFingerprintID() {
+  uint8_t p = finger.getImage();
+  if (p != FINGERPRINT_OK)  return -1;
+
+  p = finger.image2Tz();
+  if (p != FINGERPRINT_OK)  return -1;
+
+  p = finger.fingerFastSearch();
+  if (p != FINGERPRINT_OK)  return -1;
+  return finger.fingerID; 
+} // fin getFingerprintIDez()

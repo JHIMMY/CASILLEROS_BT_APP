@@ -24,14 +24,15 @@ let app = {
     },
     onMessage: function(data) {
         // counter.innerHTML = data; 
-        dataDiv.innerHTML = data;       
+        processIncomingData(data);      
     },
     subscribeFailed: function() {
         alert("Fallo la suscripción al Bluetooth Arduino");
     },
     
     sendData: function(data){
-        bluetoothSerial.write(data);
+        let trueData = data + "\n";
+        bluetoothSerial.write(trueData);
     },
     // From here JAD FUNCTIONS SPECIFIC FOT THIS PROJECT
     setListeners: function() {
@@ -42,14 +43,21 @@ let app = {
         let cardImg = document.getElementById("carImg");
         let abrirBtn = document.getElementById("abrirBtn");
         let devolverBtn = document.getElementById("devolverBtn");
+        let testBtn = document.getElementById("testBtn");
 
         activarBtn.addEventListener('click', () => {
             checkSystem(pass.value);
         } , false);
 
         desactivarBtn.addEventListener('click', function(){
+            app.sendData(">DIS_FINGER<");
             bluetoothSerial.disconnect(resetApp, problemDisconnecting);
         }, false );
+
+        testBtn.addEventListener('click', function(){
+            app.sendData(">HolaCHoco<");
+        }, false);
+
     }, 
  
 }; // END of APP
@@ -76,24 +84,25 @@ function checkSystem(password){
 }
 
 function activateAllSystems(params) {
-    app.sendData("Hola");
+    app.sendData(">EN_FINGER<");
     setStatusLabel("Pase su huella", "lime");
     setcardImage("finger.jpg");
     pass.value = '';
     enableDisableBtns(activarBtn, false);
     enableDisableBtns(desactivarBtn, true);
-    app.sendData("jhimmy\n");
+    enableDisableBtns(testBtn, true);
 }
 
 function resetApp(){
     // restarts the app ewhithn the app
     setStatusLabel("");
-    setcardImage("uagrm.jpg");
     pass.value = '';
     enableDisableBtns(activarBtn, true);
     enableDisableBtns(desactivarBtn, false);
+
     enableDisableBtns(abrirBtn, false);
     enableDisableBtns(devolverBtn, false);
+    removeUserData();
 }
 
 function problemDisconnecting(){
@@ -119,4 +128,53 @@ function enableDisableBtns(btn, cmd = false){
     else{
         btn.disabled = true;
     }
+}
+
+function processIncomingData(data){
+    /* VALID INSTRUCTIONS 
+        user#  -- eg user1, user2, user3
+    */
+   let divTESTEST = document.getElementById("tete");
+   divTESTEST.innerText = data;
+    if (data.indexOf("user") != -1){
+        console.log("La instruccion es Correcta!");
+        let userID = data.substring(4);
+        checkValidID(userID);
+    }
+    else if (false){
+
+    }
+    else{
+       console.log("INCORRECTA!!!!!");
+    }
+} // end processincomingdata
+
+
+ function checkValidID(id){
+    let len = usuarios.length;
+    console.log("Longitud array usuarios: " + len);
+    for (let i = 0 ; i < len; i++){
+        if (usuarios[i].id == Number(id)){
+            retreiveUserData(i, id);
+            break;
+        }
+    }
+ }
+
+
+function retreiveUserData(index, ID){
+    enableDisableBtns(abrirBtn, true);
+    enableDisableBtns(devolverBtn, true);
+
+    nombreSpan.innerText = usuarios[index].nombre;
+    carreraSpan.innerText = usuarios[index].carrera;
+    registroSpan.innerText = usuarios[index].registro;
+    setcardImage(usuarios[index].foto);
+}
+
+function removeUserData(){
+    nombreSpan.innerText = "..........................";
+    carreraSpan.innerText = "..........................";
+    registroSpan.innerText = "..........................";
+    setcardImage("uagrm.jpg");
 }
