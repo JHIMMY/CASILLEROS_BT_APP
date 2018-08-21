@@ -20,7 +20,7 @@ bool ACCESS_GRANTED = false;
 int ID = -1;
 
 const byte relay_1 = 12; // power fingerprint sensor
-const byte relay_2 = 13; //
+const byte relay_2 = 13; // power NC Devolucion servo, NO lab 6
 
 const uint8_t servo1Pin = 3;
 const uint8_t servo2Pin = 5;
@@ -29,14 +29,15 @@ const uint8_t servo4Pin = 9;
 const uint8_t servo5Pin = 10;
 const uint8_t servo6Pin = 11;
 
-Servo servo1; // lab1
+
+Servo servo1; // DEV / lab1
 Servo servo2; // lab2
 Servo servo3; // lab3
 Servo servo4; // lab4
 Servo servo5; // lab 5
-Servo servo6; // control devolucion
-
-Servo myServos[6] = {servo1, servo2, servo3, servo4, servo5, servo6};
+Servo servo6; // lab 6
+const int servosNumber = 6;
+Servo myServos[servosNumber] = {servo1, servo2, servo3, servo4, servo5, servo6};
 
 SoftwareSerial mySerial(2, 4); // Rx, TX -> fingerprint sensor
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
@@ -53,9 +54,22 @@ void setup(){
     pinMode(relay_2, OUTPUT);
     //Apagar todos los reles por defecto
     relayLockerControl(1, false); // fingerprint sensor
-    relayLockerControl(2, false); // could be to use servo 6 and 7 trick
+    relayLockerControl(2, false); // could be to use servo 1 and devol servo trick
 
+    servo1.attach(servo1Pin);
+    executeCMD(">SERVO1<"); //reset servo1
+    servo2.attach(servo2Pin);
+    servo3.attach(servo3Pin);
+    servo4.attach(servo4Pin);
+    servo5.attach(servo5Pin);
+    servo6.attach(servo6Pin);
     
+    controlServo(1, 0);
+    controlServo(2, 0);
+    controlServo(3, 0);
+    controlServo(4, 0);
+    controlServo(5, 0);
+    controlServo(6, 0);
 }
 
 void loop(){
@@ -112,7 +126,53 @@ void executeCMD(String comando){
       ID = -1;
       CMD = "";
   }
-}
+  else if(comando == ">SERVO1<"){
+      relayLockerControl(2, true); // enable lab 1 servo
+      delay(450);
+      Serial.println("ABRIR1");
+      controlServo(1, 180);
+      delay(1800);
+      controlServo(1, 0);
+      delay(320);
+      relayLockerControl(2, false);
+  }
+  else if(comando == ">SERVO2<"){
+      Serial.println("ABRIR2");
+      controlServo(2, 180);
+      delay(2000);
+      controlServo(2, 0);
+  }
+  else if(comando == ">SERVO3<"){
+      Serial.println("ABRIR3");
+      controlServo(3, 180);
+      delay(2000);
+      controlServo(3, 0);
+  }
+  else if(comando == ">SERVO4<"){
+      Serial.println("ABRIR4");
+      controlServo(4, 180);
+      delay(2000);
+      controlServo(4, 0);
+  }
+  else if(comando == ">SERVO5<"){
+      Serial.println("ABRIR5");
+      controlServo(5, 180);
+      delay(2000);
+      controlServo(5, 0);
+  }
+  else if(comando == ">SERVO6<"){
+      Serial.println("ABRIR6");
+      controlServo(6, 180);
+      delay(2000);
+      controlServo(6, 0);
+  }
+  else if(comando == ">SERVODEVOL<"){
+      Serial.println("ABRIR-DEVOL");
+      controlServo(1, 180);
+      delay(6000);
+      controlServo(1, 0);
+  }
+} // fin executeCMD()
 
 void relayLockerControl(int number, boolean action){
     // number -> numero de pin de rele a controlar
@@ -126,12 +186,6 @@ void relayLockerControl(int number, boolean action){
         case 2:
             relay = relay_2;
             break;
-        // case 3:
-        //     relay = relay_3;
-        //     break;
-        // case 4:
-        //     relay = relay_4;
-        //     break;
         default:
             systemError("Error No. de Rele desconocido. REINICIE!");
     } 
@@ -148,12 +202,12 @@ void relayLockerControl(int number, boolean action){
 void systemError(String msg){
     // resetear el arduino para continuar
     //Serial.println(msg);
-
+    Serial.println("ERROR!"); // error fatal reinicie
     while (1) { delay(10); }
 }
 
 void controlServo(int servoNumber, int rotation ){
-    if (servoNumber >= 1 && servoNumber <= 6){
+    if (servoNumber >= 1 && servoNumber <= servosNumber){ // 7 servos
         int index = servoNumber - 1;
         myServos[index].write(rotation);
     }

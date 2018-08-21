@@ -42,6 +42,7 @@ let app = {
         let statusLabel = document.getElementById("statusLabel");
         let cardImg = document.getElementById("carImg");
         let abrirBtn = document.getElementById("abrirBtn");
+        let labSelection = document.getElementById("labSelection");
         let devolverBtn = document.getElementById("devolverBtn");
         let testBtn = document.getElementById("testBtn");
 
@@ -54,10 +55,19 @@ let app = {
             bluetoothSerial.disconnect(resetApp, problemDisconnecting);
         }, false );
 
-        testBtn.addEventListener('click', function(){
-            app.sendData(">HolaCHoco<");
+        // testBtn.addEventListener('click', function(){
+        //     app.sendData(">HolaCHoco<");
+        // }, false);
+
+        abrirBtn.addEventListener('click', function(){
+            let sel = labSelection.value;  ///string
+            let servo = ">SERVO" + sel + "<";
+            app.sendData(servo);
         }, false);
 
+        devolverBtn.addEventListener('click', function(){
+            app.sendData(">SERVODEVOL<");
+        }, false);
     }, 
  
 }; // END of APP
