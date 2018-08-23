@@ -69,7 +69,7 @@
                                         <div class="form-group">
                                             <label for="labSelection" style="color:silver; font-size: 15px;">Entrega</label>
                                             <select class="form-control form-control-sm" id="labSelection">
-                                                <option selected disabled>Elija Laboratorio</option>
+                                                <option selected disabled>Elija_Laboratorio</option>
                                                 <option value="1">1 &nbsp;&nbsp;Laboratorio Redes</option>
                                                 <option value="2">2 &nbsp;&nbsp;Laboratorio Máquinas</option>
                                                 <option value="3">3 &nbsp;&nbsp;Laboratorio Electrónica</option>
@@ -96,14 +96,32 @@
                         <div class="col-2"></div>
                         <div class="col-8">
                             
-                            <div> sector pruebas</div>
-                            <div id="tete"></div>
+                            <div> Ver registro <button id="showRegister" style="margin-left:35px;" class="btn btn-dark btn-sm" disabled>Mostrar</button></div>
                         </div>
                         <div class="col-2"></div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- end of masterDiv -->
+
+        <div id="registerDiv" class="container-fluid" style="display:none;">
+                <div style="margin:15px;text-align: center">
+                    <p style="height:40px;">REGISTRO DE EVENTOS <button id="hideRegister" style="float:right;" class="btn btn-outline-light btn-sm">VOLVER</button></P>
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                       
+                    </tbody>
+                </table>   
+            </div> <!-- END RegisterDIV -->
 
         <!-- SCRIPTS NEEDED -->
         <script type="text/javascript" src="cordova.js"></script>
@@ -111,6 +129,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/fastclick.js"></script>
         <script src="js/userData.js"></script>
+        <script src="js/registro.js"></script>
         <script src="js/app.js"></script>
     </body>
 </html>

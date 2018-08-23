@@ -20,6 +20,14 @@ html, body {
     border: lightgray 2px solid;
 }
 
+div#registerDiv{
+    height: 100%;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: #01346B; /* body for navbar blank left right */
+    color: whitesmoke;
+    font-weight: bold;
+}
+
 button.activarButtons{
     width: 80px;
     font-size:0.78rem;

@@ -8,23 +8,30 @@ let usuarios =[
     },
     {
         id: 2,
-        nombre : "Ali Lemke",
+        nombre : "Alejandro Lemke Gil",
         carrera : "Ingeniería Electrica",
         registro: "212033409",
-        foto : "person.jpg"
+        foto : "alejandro.jpg"
     },
     {
         id: 3,
-        nombre : "Joanne Gerlach",
+        nombre : "Joanne Gerlach Putz",
         carrera : "Ingeniería Comercial",
         registro: "212033409",
         foto : "rolo.jpg"
     },
     {
         id: 4,
-        nombre : "Frances Deckow",
+        nombre : "Frances Deckow Monroe",
         carrera : "Ingeniería ",
         registro: "212033409",
-        foto : "mario.jpg"
-    }    
+        foto : "frances.jpg"
+    },    
+    {
+        id: 5,
+        nombre : "May Konopelski Gibson",
+        carrera : "Ingeniería ",
+        registro: "212033409",
+        foto : "person.jpg"
+    },    
 ];

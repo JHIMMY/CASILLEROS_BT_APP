@@ -186,7 +186,7 @@ void relayLockerControl(int number, boolean action){
             relay = relay_2;
             break;
         default:
-            systemError("Error No. de Rele desconocido. REINICIE!");
+            systemError("Numero de rele invalido!");
     } 
 
     if (action){
@@ -211,8 +211,9 @@ void controlServo(int servoNumber, int rotation ){
         myServos[index].write(rotation);
     }
     else{
-        systemError("ERROR: Invalid Servo Number");
+        systemError("Servo Invalido");
     }
+ 
 } // FIN controlServo()
 
 void fingerprintCheckAndAction(bool action){
@@ -229,7 +230,7 @@ void fingerprintCheckAndAction(bool action){
             // Serial.println("Waiting for valid finger...");
         } 
         else {
-            systemError("No se pudo encontrar al sensor :(\nFAVOR REINICIE!");
+             systemError("No se pudo encontrar al sensor :(\nFAVOR REINICIE!");
         }   
     }
     else{

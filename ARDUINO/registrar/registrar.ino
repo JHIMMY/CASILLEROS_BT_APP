@@ -18,7 +18,7 @@ void setup()
 {
   Serial.begin(9600);
   delay(100);
-  Serial.println("\n\nAdafruit Fingerprint sensor enrollment");
+  Serial.println("\n\nREGISTRO DE USUARIOS ID SENSOR DE HUELLA");
 
   pinMode(pinRele, OUTPUT);
   delay(50);

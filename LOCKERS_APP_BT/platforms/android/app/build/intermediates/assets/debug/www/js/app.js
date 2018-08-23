@@ -4,7 +4,6 @@ let macAddress = "20:16:11:29:61:79";  // BT
 let app = {
     initialize: function() {
         this.bindEvents();
-        console.log("dentro de initialize");
         // this.iniciaBotones();
     },
     bindEvents: function() {
@@ -45,6 +44,8 @@ let app = {
         let labSelection = document.getElementById("labSelection");
         let devolverBtn = document.getElementById("devolverBtn");
         let testBtn = document.getElementById("testBtn");
+        let showRegister = document.getElementById("showRegister");
+        let hideRegister = document.getElementById("hideRegister");
 
         activarBtn.addEventListener('click', () => {
             checkSystem(pass.value);
@@ -68,7 +69,21 @@ let app = {
         devolverBtn.addEventListener('click', function(){
             app.sendData(">SERVODEVOL<");
         }, false);
-    }, 
+
+        showRegister.addEventListener('click', function(){
+            registerDiv.style.display = "block";
+            for (let i = 0; i < registro.length; i++){
+                $("#tableBody").append(`<tr><th scope=''>${registro[i].evt}</th><td>${registro[i].nombre}</td><td>${registro[i].fecha}</td><td>${registro[i].hora}</td></tr>`);
+            }
+            masterDiv.style.display = "none";
+        }, false);
+
+        hideRegister.addEventListener('click', function(){
+            $("#tableBody").empty();
+            registerDiv.style.display = "none";
+            masterDiv.style.display = "block";
+        }, false);
+    }
  
 }; // END of APP
 
@@ -83,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function (){
 function checkSystem(password){
     //checks the password and connection to BT
     console.log(`The password you've entered is: ${password}`);
-    if (password.toLowerCase() === 'julio'){
+    if (password.toLowerCase() === 'julio'){  //current password = julio
         console.log("password correct");
         bluetoothSerial.connect(macAddress, app.onConnect, app.onDisconnect);
     }
@@ -100,7 +115,6 @@ function activateAllSystems(params) {
     pass.value = '';
     enableDisableBtns(activarBtn, false);
     enableDisableBtns(desactivarBtn, true);
-    enableDisableBtns(testBtn, true);
 }
 
 function resetApp(){
@@ -112,6 +126,7 @@ function resetApp(){
 
     enableDisableBtns(abrirBtn, false);
     enableDisableBtns(devolverBtn, false);
+    enableDisableBtns(showRegister, false);
     removeUserData();
 }
 
@@ -144,15 +159,13 @@ function processIncomingData(data){
     /* VALID INSTRUCTIONS 
         user#  -- eg user1, user2, user3
     */
-   let divTESTEST = document.getElementById("tete");
-   divTESTEST.innerText = data;
     if (data.indexOf("user") != -1){
         console.log("La instruccion es Correcta!");
         let userID = data.substring(4);
         checkValidID(userID);
     }
-    else if (false){
-
+    else if (data === "ERROR!"){
+        alert("ERROR DETECTADO FAVOR REINICIE TODO EL SISTEMA");
     }
     else{
        console.log("INCORRECTA!!!!!");
@@ -175,11 +188,14 @@ function processIncomingData(data){
 function retreiveUserData(index, ID){
     enableDisableBtns(abrirBtn, true);
     enableDisableBtns(devolverBtn, true);
+    enableDisableBtns(showRegister, true);
+    setStatusLabel("");
 
     nombreSpan.innerText = usuarios[index].nombre;
     carreraSpan.innerText = usuarios[index].carrera;
     registroSpan.innerText = usuarios[index].registro;
     setcardImage(usuarios[index].foto);
+    recordEvent(nombreSpan.innerText);
 }
 
 function removeUserData(){
@@ -187,4 +203,39 @@ function removeUserData(){
     carreraSpan.innerText = "..........................";
     registroSpan.innerText = "..........................";
     setcardImage("uagrm.jpg");
+}
+
+function recordEvent(nombre){
+    //get the current system time
+    let t = new Date();
+    let date = t.getDate();
+    let month = t.getMonth() + 1;
+    let year = t.getFullYear();
+    let hours = t.getHours().toString();
+    let minutes = t.getMinutes().toString();
+    let seconds = t.getSeconds().toString();
+
+    if (hours.length === 1){
+        hours = "0" + hours;
+    }
+
+    if (minutes.length === 1){
+        minutes = "0" + minutes;
+    }
+
+    if (seconds.length === 1){
+        seconds = "0" + seconds;
+    }
+
+    let fullDate = `${date}/${month}/${year}`;
+    let fullHora = `${hours}:${minutes}:${seconds}`;
+
+    let evtNumber = registro.length;
+    if (evtNumber === 0){
+        evtNumber = 1;
+    }
+    else{
+        evtNumber++;
+    }
+    registro[evtNumber-1] = {evt:evtNumber, nombre: nombre, fecha: fullDate, hora: fullHora};
 }
