@@ -1,16 +1,16 @@
 let usuarios =[ 
     {
         id: 1,
-        nombre : "Julio Mario Grondona",
-        carrera : "Ingeniería Industrial",
-        registro: "212033409",
-        foto : "mario.jpg"
+        nombre : "Julio Isurza Estrada",
+        carrera : "Electricidad Industrial",
+        registro: "5012",
+        foto : "julio.jpg"
     },
     {
         id: 2,
-        nombre : "Alejandro Lemke Illanes",
-        carrera : "Ingeniería Electrica",
-        registro: "212033409",
+        nombre : "Alejandro Tavi Nuñez",
+        carrera : "Electricidad Industrial",
+        registro: "5123",
         foto : "alejandro.jpg"
     },
     {

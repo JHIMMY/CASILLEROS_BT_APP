@@ -1,5 +1,6 @@
 
-let macAddress = "20:16:11:29:61:79";  // BT
+// let macAddress = "20:16:11:29:61:79";  // BT
+let macAddress = "00:21:13:00:E2:D2";// BT 00:21:13:00:E2:D2
 
 let app = {
     initialize: function() {

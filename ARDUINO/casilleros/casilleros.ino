@@ -21,7 +21,7 @@ bool ACCESS_GRANTED = false;
 int ID = -1;
 
 const byte relay_1 = 12; // power fingerprint sensor
-const byte relay_2 = 13; // power NC Devolucion servo, NO lab 6
+const byte relay_2 = 13; // power NC Devolucion servo, NO lab 1
 
 const uint8_t servo1Pin = 3;
 const uint8_t servo2Pin = 5;
